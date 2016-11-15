@@ -3,9 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title>Battleship</title>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 70px;
+        }
+    </style>
 </head>
 <body>
-    <script type="text/javascript" src="scripts/Dumbot.js"></script>
-    <script type="text/javascript" src="scripts/Randombot.js"></script>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <span class="navbar-brand">
+                    Battleship
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Select Two to Battle!</h3>
+                <hr />
+                <div class="form-group">
+                    <label for="player1">Player 1</label>
+                    <select id="player1"></select>
+                </div>
+                <div class="form-group">
+                    <label for="player2">Player 2</label>
+                    <select id="player2"></select>
+                </div>
+                <div class="btn btn-primary btn-large">Start</div>
+            </div>
+            <div class="col-md-6">
+
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.1/lodash.min.js"></script>
+
+    <!-- feel free to rename and move the file -->
+    <!-- be sure to update this reference if you do -->
+    <script type="text/javascript" src="MyBot.js"></script>
+
+    <script type="text/javascript" src="scripts/bots/Dumbot.js"></script>
+    <script type="text/javascript" src="scripts/bots/Randombot.js"></script>
+    <script type="text/javascript" src="scripts/GameEngine.js"></script>
 </body>
 </html>

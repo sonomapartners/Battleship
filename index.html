@@ -4,72 +4,13 @@
     <meta charset="UTF-8">
     <title>Battleship</title>
 
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <style>
-        .player-board, #controlPanel {
-            text-align: center;
-        }
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        .player-wins {
-            margin-left: 10px;
-        }
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/css/bootstrap-flex.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/app.css">
 
-        body {
-            padding-top: 70px;
-        }
-    </style>
-</head>
-<body>
-    <div class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <span class="navbar-brand">
-                    Battleship
-                </span>
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <h3>Select Two to Battle!</h3>
-                <hr />
-                <div class="form-group">
-                    <label for="player1">Player 1</label>
-                    <select id="player1"></select>
-                </div>
-                <div class="form-group">
-                    <label for="player2">Player 2</label>
-                    <select id="player2"></select>
-                </div>
-                <div class="btn btn-primary btn-large">Start</div>
-            </div>
-            <div class="col-md-6">
-                <h3>Game <span id="gameNumber">--</span></h3>
-                <hr />
-                <div id="player1board" class="well player-board">
-                    <h4>Player 1 <span class="badge player-wins" id="player1Wins">0</span></h4>
-                    <div class="board">
-
-                    </div>
-                </div>
-                <div id="player2board" class="well player-board">
-                    <h4>Player 2 <span class="badge player-wins" id="player2Wins">0</span></h4>
-                    <div class="board">
-
-                    </div>
-                </div>
-                <div id="controlPanel" class="well well-small">
-                    <button class="btn btn-primary disabled" id="previous"><span class="glyphicon glyphicon-step-backward"></span></button>
-                    <button class="btn btn-primary disabled" id="replay"><span class="glyphicon glyphicon-play"></span></button>
-                    <button class="btn btn-primary disabled" id="next"><span class="glyphicon glyphicon-step-forward"></span></button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.1/lodash.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.1/lodash.min.js"></script>
 
     <!-- feel free to rename and move the file -->
     <!-- be sure to update this reference if you do -->
@@ -78,5 +19,73 @@
     <script type="text/javascript" src="scripts/bots/Dumbot.js"></script>
     <script type="text/javascript" src="scripts/bots/Randombot.js"></script>
     <script type="text/javascript" src="scripts/GameEngine.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="jumbotron">
+                    <h1 class="display-3">Battleship</h1>
+                    <p class="lead">Two bots enter, (most likely) only one leaves.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Select Two to Battle!</h3>
+
+                <hr />
+
+                <div class="form-group">
+                    <label for="player1">Player 1</label>
+
+                    <select class="form-control" data-hook="player-list player-1"></select>
+                </div>
+
+                <div class="form-group">
+                    <label for="player2">Player 2</label>
+
+                    <select class="form-control" data-hook="player-list player-2"></select>
+                </div>
+
+                <div class="btn btn-primary btn-large">Start</div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-block">
+                        <h4 class="card-title">Game <span data-hook="game-number">--</span></h4>
+                    </div>
+
+                    <div class="card-block">
+                        <h5 class="card-title">Player 1 <span class="tag tag-pill tag-success" data-hook="player-1-win-count">0</span></h5>
+
+                        <div class="board">
+
+                        </div>
+                    </div>
+
+                    <div class="card-block">
+                        <h5 class="card-title">Player 2 <span class="tag tag-pill tag-success" data-hook="player-2-win-count">0</span></h5>
+
+                        <div class="board">
+
+                        </div>
+                    </div>
+
+                    <div class="card-block text-xs-center">
+                        <button class="btn btn-primary disabled" data-hook="previous">
+                            <i class="fa fa-step-backward"></i>
+                        </button>
+                        <button class="btn btn-primary disabled" data-hook="replay">
+                            <i class="fa fa-play"></i>
+                        </button>
+                        <button class="btn btn-primary disabled" data-hook="next">
+                            <i class="fa fa-step-forward"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

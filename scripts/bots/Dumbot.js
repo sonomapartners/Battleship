@@ -1,4 +1,6 @@
-(function(global) {
+(function (global) {
+    'use strict';
+
     // ships = [2, 3, 3, 4, 5]
     function setupBoard(ships) {
         var board = [
@@ -88,8 +90,10 @@
         return myNewMove;
     }
 
-    global.Dumbot = {
+    global.Bots = global.Bots || {};
+    global.Bots.Dumbot = {
         setupBoard: setupBoard,
         fire: fire
     };
-})(window);
+
+}(this));

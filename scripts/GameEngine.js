@@ -18,6 +18,8 @@
     }
 
     var _coordinateTemplate = _.template('<span class="tag tag-default coordinate" data-hook="x_<%= x %>_y_<%= y %>">&nbsp;</span>'),
+        _player1state,
+        _player2state,
         _games,
         _gameIndex;
 
@@ -58,7 +60,9 @@
             board = document.querySelector('[data-hook="board player-2"]');
         }
 
-        board.querySelector('[data-hook="x_' + move.x + '_y_' + move.y + '"]').classList.add(move.isHit ? "tag-danger" : "tag-info");
+        if (move != null && move.x != null && move.y != null) {
+            board.querySelector('[data-hook="x_' + move.x + '_y_' + move.y + '"]').classList.add(move.isHit ? "tag-danger" : "tag-info");
+        }
 
         setTimeout(function () {
             if (gameState.currentPlayer === 1) {
@@ -82,16 +86,16 @@
 
         if (gameState.player1_moveCount >= p1total && gameState.player2_moveCount >= p2total) {
             if (gameState.winner === 1) {
-                document.querySelector('[data-hook~="win-count-player-1"]').add('btn-success');
-                document.querySelector('[data-hook~="win-count-player-2"]').remove('btn-success');
+                document.querySelector('[data-hook~="win-count-player-1"]').classList.add('btn-success');
+                document.querySelector('[data-hook~="win-count-player-2"]').classList.remove('btn-success');
             }
             else if (gameState.winner === 2) {
-                document.querySelector('[data-hook~="win-count-player-1"]').remove('btn-success');
-                document.querySelector('[data-hook~="win-count-player-2"]').add('btn-success');
+                document.querySelector('[data-hook~="win-count-player-1"]').classList.remove('btn-success');
+                document.querySelector('[data-hook~="win-count-player-2"]').classList.add('btn-success');
             }
             else {
-                document.querySelector('[data-hook~="win-count-player-1"]').remove('btn-success');
-                document.querySelector('[data-hook~="win-count-player-1"]').remove('btn-success');
+                document.querySelector('[data-hook~="win-count-player-1"]').classList.remove('btn-success');
+                document.querySelector('[data-hook~="win-count-player-1"]').classList.remove('btn-success');
             }
 
             _setWins();
@@ -117,8 +121,8 @@
         _replayGame(new GameState(p1moves, p2moves, winner, delay));
     }
 
-    function _validatePlacements(player) {
-        var places = player.state.board,
+    function _validatePlacements(player, playerState) {
+        var places = playerState.board,
             place, 
             size, 
             dir, 
@@ -206,18 +210,18 @@
         return Math.sqrt(p0 + p1) + 1;
     }
 
-    function _fire(player, opponent) {
+    function _fire(player, playerState, opponentState) {
         var move,
             placement,
             isCoordMatch = false,
-            counter = player.state.board.length,
+            counter = playerState.board.length,
             script;
 
-        move = player.fire(player.state.moves, opponent.state.moves);
-        player.state.moves.push(move);
+        move = player.fire(playerState.moves, opponentState.moves);
+        playerState.moves.push(move);
 
         while (counter-- > 0) {
-            placement = opponent.state.board[counter];
+            placement = opponentState.board[counter];
 
             if (!placement.hits) {
                 placement.hits = 0;
@@ -256,8 +260,8 @@
         return false;
     }
 
-    function _setupGame(player) {
-        player.state.board = player.setupBoard([2, 3, 3, 4, 5]);
+    function _setupGame(player, playerState) {
+        playerState.board = player.setupBoard([2, 3, 3, 4, 5]);
     }
 
     function _runGame(player1, player2) {
@@ -269,16 +273,16 @@
             p1Error, p2Error;
 
         try {
-            _setupGame(player1);
-            _validatePlacements(player1);
+            _setupGame(player1, _player1state);
+            _validatePlacements(player1, _player1state);
         }
         catch (er) {
             _log(er.message);
             p1Error = er.message + ' ' + er.stack;
         }
         try {
-            _setupGame(player2);
-            _validatePlacements(player2);
+            _setupGame(player2, _player2state);
+            _validatePlacements(player2, _player2state);
         }
         catch (er) {
             _log(er.message);
@@ -294,7 +298,7 @@
 
         do {
             try {
-                result = _fire(player1, player2);
+                result = _fire(player1, _player1state, _player2state);
             }
             catch (er) {
                 _log(er.message);
@@ -312,7 +316,7 @@
             try {
                 // if player 1 hasn't already finished
                 if (!isDone) {
-                    result = _fire(player2, player1);
+                    result = _fire(player2, _player2state, _player1state);
                 }
             }
             catch (er) {
@@ -340,39 +344,27 @@
         }
     }
 
-    function _setupBot(player) {
-        player.state = {
-            board: null,
-            moves: []
-        };
-    }
-
     function _runAllBattles(player1Name, player2Name, numberOfGames) {
         var player1 = global.Bots[player1Name],
             player2 = global.Bots[player2Name],
             results = [],
             result;
 
-        try {
-            _setupBot(player1);
-        }
-        catch (er) {
-            _log(er.message);
-            return [{ winner: 2, player1_moves: [], player2_moves: [], player1LastError: er.message + ' ' + er.stack }];
-        }
-        try {
-            _setupBot(player2);
-        }
-        catch (er) {
-            _log(er.message);
-            return [{ winner: 1, player1_moves: [], player2_moves: [], player2LastError: er.message + ' ' + er.stack }];
-        }
+        _player1state = {
+            board: null,
+            moves: []
+        };
+
+        _player2state = {
+            board: null,
+            moves: []
+        };
 
         while (numberOfGames-- > 0) {
             result = {
                 winner: _runGame(player1, player2),
-                player1_moves: player1.state.moves,
-                player2_moves: player2.state.moves
+                player1_moves: _player1state.moves,
+                player2_moves: _player2state.moves
             };
 
             results.push(result);
@@ -401,10 +393,17 @@
     }
 
     function _loadBots() {
-        var playerLists = document.querySelectorAll('[data-hook~="player-list"]');
-        
+        var playerLists = document.querySelectorAll('[data-hook~="player-list"]'),
+            bots = [];
+
+        for (var botName in global.Bots) {
+            bots.push(botName);
+        }
+
+        bots.sort();
+
         _.each(playerLists, function (select) {
-            for (var botName in global.Bots) {
+            _.each(bots, function (botName) {
                 var bot = global.Bots[botName],
                     option = document.createElement('option');
 
@@ -412,7 +411,7 @@
                 option.innerHTML = botName;
 
                 select.appendChild(option);
-            }
+            });
         });
     }
 

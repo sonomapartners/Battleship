@@ -31,46 +31,38 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
-                <h3>Select Two to Battle!</h3>
-
-                <hr />
-
-                <div class="form-group">
-                    <label for="player1">Player 1</label>
-
-                    <select class="form-control" data-hook="player-list player-1"></select>
-                </div>
-
-                <div class="form-group">
-                    <label for="player2">Player 2</label>
-
-                    <select class="form-control" data-hook="player-list player-2"></select>
-                </div>
-
-                <div class="btn btn-primary btn-large">Start</div>
-            </div>
-            <div class="col-md-6">
+            <div class="col-xs-12">
                 <div class="card">
-                    <div class="card-block">
-                        <h4 class="card-title">Game <span data-hook="game-number">--</span></h4>
-                    </div>
+                    <div class="card-block form form-inline">
+                        <h4 class="card-title">Select Two to Battle!</h4>
 
-                    <div class="card-block">
-                        <h5 class="card-title">Player 1 <span class="tag tag-pill tag-success" data-hook="win-count-player-1">0</span></h5>
+                        <hr />
 
-                        <div class="bg-faded text-xs-center" data-hook="board player-1">
+                        <div class="form-group">
+                            <label for="player1">Player 1</label>
+
+                            <select class="form-control" data-hook="player-list player-1"></select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="player2">Player 2</label>
+
+                            <select class="form-control" data-hook="player-list player-2"></select>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="btn btn-primary btn-large">Start</div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
 
-                    <div class="card-block">
-                        <h5 class="card-title">Player 2 <span class="tag tag-pill tag-success" data-hook="win-count-player-2">0</span></h5>
-
-                        <div class="bg-faded text-xs-center" data-hook="board player-2">
-                        </div>
-                    </div>
-
-                    <div class="card-block text-xs-center">
+        <div class="row">
+            <div class="col-lg-12">
+                <h4 class="card-title">
+                    Game <span data-hook="game-number">--</span>
+                    <div class="float-xs-right">
                         <button class="btn btn-primary disabled" data-hook="previous">
                             <i class="fa fa-step-backward"></i>
                         </button>
@@ -81,6 +73,22 @@
                             <i class="fa fa-step-forward"></i>
                         </button>
                     </div>
+                </h4>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 bg-faded text-xs-center board-container">
+                <h5 class="card-title">Player 1 <span class="tag tag-pill tag-success" data-hook="win-count-player-1">0</span></h5>
+
+                <div data-hook="board player-1">
+                </div>
+            </div>
+
+            <div class="col-md-6 bg-faded text-xs-center board-container">
+                <h5 class="card-title">Player 2 <span class="tag tag-pill tag-success" data-hook="win-count-player-2">0</span></h5>
+
+                <div data-hook="board player-2">
                 </div>
             </div>
         </div>

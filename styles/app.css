@@ -1,8 +1,19 @@
+.slightly-less-jumbo-jumbotron {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    padding: 1rem;
+}
+
+.board-container {
+    margin-top: 1rem;
+    padding: 1rem;
+}
+
 .coordinate {
     margin: 0.2em;
     padding: 0.5em 0.75em;
 }
 
-.slightly-less-jumbo-jumbotron {
-    padding: 1rem;
+.form-inline .form-group + .form-group {
+    margin-left: 1.5em;
 }

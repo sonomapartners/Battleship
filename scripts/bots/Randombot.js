@@ -52,7 +52,10 @@
                 x = Math.floor(Math.random() * xBoardLength);
                 y = Math.floor(Math.random() * yBoardLength);
 
-                start = [x, y];
+                start = {
+                    x: x,
+                    y: y
+                };
 
                 for (j = 0; j < currentShip; j++) {
                     if (placeVertical) {
@@ -63,15 +66,18 @@
                 }
 
                 if (valid) {
-                    if (placeVertical) end = [x, y + j - 1];
-                    else end = [x + j - 1, y];
+                    if (placeVertical) end = { x: x, y: y + j - 1 };
+                    else end = { x: x + j - 1, y: y };
 
                     for (j = 0; j < currentShip; j++) {
                         if (placeVertical) board[x][y + j] = 1;
                         else board[x + j][y] = 1;
                     }
 
-                    placements.push([start, end]);
+                    placements.push({
+                        begin: start,
+                        end: end
+                    });
                     break;
                 }
             }
@@ -93,7 +99,7 @@
             this._openMoves = [];
             for (i = 0; i < 10; i++) {
                 for (j = 0; j < 10; j++) {
-                    this._openMoves.push([i, j]);
+                    this._openMoves.push({ x: i, y: j });
                 }
             }
         }

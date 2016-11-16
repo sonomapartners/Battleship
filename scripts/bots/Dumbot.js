@@ -57,10 +57,16 @@
                 x++;
             } while (!placed);
 
-            placements.push([
-                [x, y],
-                [x + ships[i] - 1, y]
-            ]);
+            placements.push({
+                begin: {
+                    x: x,
+                    y: y
+                },
+                end: {
+                    x: x + ships[i] - 1,
+                    y: y
+                }
+            });
         }
 
         return placements;
@@ -68,23 +74,23 @@
 
     function fire(myMoves, theirMoves) {
         if (!myMoves || !myMoves.length) {
-            return [0, 0];
+            return { x: 0, y: 0 };
         }
 
         var myLastMove = myMoves[myMoves.length - 1],
-            myNewMove = [0, 0];
+            myNewMove = { x: 0, y: 0 };
 
-        if (myLastMove[0] !== 9 && myLastMove[1] !== 9) {
-            myNewMove[0] = myLastMove[0] + 1;
-            myNewMove[1] = myLastMove[1];
+        if (myLastMove.x !== 9 && myLastMove.y !== 9) {
+            myNewMove.x = myLastMove.x + 1;
+            myNewMove.y = myLastMove.y;
         }
-        else if (myLastMove[0] === 9 && myLastMove[1] !== 9) {
-            myNewMove[0] = 0;
-            myNewMove[1] = myLastMove[1] + 1;
+        else if (myLastMove.x === 9 && myLastMove.y !== 9) {
+            myNewMove.x = 0;
+            myNewMove.y = myLastMove.y + 1;
         }
-        else if (myLastMove[1] === 9 && myLastMove[0] !== 9) {
-            myNewMove[0] = myLastMove[0] + 1;
-            myNewMove[1] = myLastMove[1];
+        else if (myLastMove.y === 9 && myLastMove.x !== 9) {
+            myNewMove.x = myLastMove.x + 1;
+            myNewMove.y = myLastMove.y;
         }
 
         return myNewMove;

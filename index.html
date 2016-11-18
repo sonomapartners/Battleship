@@ -18,7 +18,8 @@
 
     <script type="text/javascript" src="scripts/bots/Dumbot.js"></script>
     <script type="text/javascript" src="scripts/bots/Randombot.js"></script>
-    <script type="text/javascript" src="scripts/GameEngine.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+    <script type="text/javascript" src="scripts/gameEngine.js"></script>
 </head>
 <body>
     <div class="container">
@@ -51,45 +52,45 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="btn btn-primary btn-large" data-hook="run-battle">Start</div>
+                            <div class="btn-group" role="group">
+                                <div class="btn btn-primary btn-large" data-hook="run-battle">Run 1 Battle</div>
+                                <div class="btn btn-secondary btn-large" data-hook="run-bulk-battles">Run 1,000 Battles</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-lg-12">
-                <h4 class="card-title">
-                    <span class="align-middle">Game <span data-hook="game-number">--</span></span>
-
-                    <div class="float-xs-right">
-                        <button class="btn btn-primary disabled" data-hook="replay-previous">
-                            <i class="fa fa-step-backward"></i>
-                        </button>
-                        <button class="btn btn-primary disabled" data-hook="replay-play">
-                            <i class="fa fa-play"></i>
-                        </button>
-                        <button class="btn btn-primary disabled" data-hook="replay-next">
-                            <i class="fa fa-step-forward"></i>
-                        </button>
-                    </div>
-                </h4>
-            </div>
-        </div>
-
-        <div class="row">
+        <div class="row hide" data-hook="results-view-visual">
             <div class="col-md-6 bg-faded text-xs-center board-container">
-                <h5 class="card-title">Player 1 <span class="tag tag-pill tag-success" data-hook="win-count-player-1">0</span></h5>
+                <h5 class="card-title">Player 1 <span class="tag tag-pill tag-success" data-hook="result-value win-count-player-1">0</span></h5>
 
                 <div data-hook="board player-1">
                 </div>
             </div>
 
             <div class="col-md-6 bg-faded text-xs-center board-container">
-                <h5 class="card-title">Player 2 <span class="tag tag-pill tag-success" data-hook="win-count-player-2">0</span></h5>
+                <h5 class="card-title">Player 2 <span class="tag tag-pill tag-success" data-hook="result-value win-count-player-2">0</span></h5>
 
                 <div data-hook="board player-2">
+                </div>
+            </div>
+        </div>
+
+        <div class="row hide" data-hook="results-view-stats">
+            <div class="col-md-6 offset-md-3">
+                <div class="card card-block bg-faded">
+                    <h5>Player 1 Wins <span class="tag tag-pill tag-default float-xs-right" data-hook="win-percentage-player-1">0.00%</span></h5>
+                </div>
+                <div class="card card-block bg-faded">
+                    <h5>Player 2 Wins <span class="tag tag-pill tag-default float-xs-right" data-hook="win-percentage-player-2">0.00%</span></h5>
+                </div>
+                <div class="card card-block bg-faded">
+                    <h5>Ties <span class="tag tag-pill tag-default float-xs-right" data-hook="tie-percentage">0.00%</span></h5>
+                </div>
+                <div class="card card-block bg-faded">
+                    <h5><i class="fa fa-clock-o"></i> <span class="tag tag-pill tag-primary float-xs-right" data-hook="count-seconds">0.00s</span></h5>
                 </div>
             </div>
         </div>

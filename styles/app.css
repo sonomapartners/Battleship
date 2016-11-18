@@ -10,8 +10,17 @@
 }
 
 .coordinate {
+    height: 24px;
+    width: 24px;
     margin: 0.2em;
-    padding: 0.5em 0.75em;
+    padding: 0;
+}
+
+.coordinate img {
+    height: 22px;
+    width: 22px;
+    margin: 0;
+    padding: 0;
 }
 
 .form-inline .form-group + .form-group {

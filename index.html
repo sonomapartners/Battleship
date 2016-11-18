@@ -64,14 +64,14 @@
 
         <div class="row hide" data-hook="results-view-visual">
             <div class="col-md-6 bg-faded text-xs-center board-container">
-                <h5 class="card-title">Player 1 <span class="tag tag-pill tag-success" data-hook="result-value win-count-player-1">0</span></h5>
+                <h5 class="card-title">Player 1 <span class="tag tag-pill tag-success" data-hook="win-player-1"></span></h5>
 
                 <div data-hook="board player-1">
                 </div>
             </div>
 
             <div class="col-md-6 bg-faded text-xs-center board-container">
-                <h5 class="card-title">Player 2 <span class="tag tag-pill tag-success" data-hook="result-value win-count-player-2">0</span></h5>
+                <h5 class="card-title">Player 2 <span class="tag tag-pill tag-success" data-hook="win-player-2"></span></h5>
 
                 <div data-hook="board player-2">
                 </div>
@@ -95,5 +95,19 @@
             </div>
         </div>
     </div>
+
+    <script type="text/template" data-hook="template-coordinate">
+        <span class="tag tag-default coordinate" data-hook="x_<%= x %>_y_<%= y %>">
+            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+        </span>
+    </div>
+
+<!--
+    Attributions
+
+    <div>Icons made by <a href="http://www.flaticon.com/authors/baianat" title="Baianat">Baianat</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+    <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+
+-->
 </body>
 </html>

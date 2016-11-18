@@ -115,6 +115,11 @@
                 script;
 
             move = player.fire(playerState.moves, opponentState.moves);
+
+            if (move == null || move.x == null || move.y == null) {
+                throw new Error('Received null/undefined location upon which to fire.')
+            }
+
             playerState.moves.push(move);
 
             while (counter-- > 0) {
@@ -257,7 +262,7 @@
                 };
 
                 result = {
-                    winner: _runGame(player1, player2),
+                    winner: _runGame(new player1(), new player2()),
                     player1_moves: _player1state.moves,
                     player2_moves: _player2state.moves
                 };

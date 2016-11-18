@@ -97,9 +97,9 @@
     }
 
     global.Bots = global.Bots || {};
-    global.Bots.Dumbot = {
-        setupBoard: setupBoard,
-        fire: fire
+    global.Bots.Dumbot = function Dumbot() {
+        this.setupBoard = setupBoard;
+        this.fire = fire;
     };
 
 }(this));

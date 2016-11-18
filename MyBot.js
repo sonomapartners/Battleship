@@ -16,9 +16,9 @@
         find your bot and run it :)
     */
     global.Bots = global.Bots || {};
-    global.Bots.MyBot = {
-        setupBoard: setupBoard,
-        fire: fire
+    global.Bots.MyBot = function MyBot() {
+        this.setupBoard = setupBoard;
+        this.fire = fire;
     };
 
 }(this));

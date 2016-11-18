@@ -45,8 +45,8 @@
             if (placeVertical) yBoardLength -= (currentShip - 1);
             else xBoardLength -= (currentShip - 1);
 
-            // try placing the ship 5 times before giving up
-            for (i = 0; i < 5; i++) {
+            // try placing the ship 10 times before giving up
+            for (i = 0; i < 10; i++) {
                 valid = true;
 
                 x = Math.floor(Math.random() * xBoardLength);
@@ -113,9 +113,9 @@
     }
 
     global.Bots = global.Bots || {};
-    global.Bots.Randombot = {
-        setupBoard: setupBoard,
-        fire: fire
-    };
+    global.Bots.Randombot = function Randombot() {
+        this.setupBoard = setupBoard;
+        this.fire = fire;
+    }
 
 }(this));

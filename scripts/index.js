@@ -11,7 +11,7 @@
         this.delay = delay;
     }
 
-    var _coordinateTemplate = _.template('<span class="tag tag-default coordinate" data-hook="x_<%= x %>_y_<%= y %>">&nbsp;</span>'),
+    var _coordinateTemplate,
         _games,
         _gameIndex;
 
@@ -19,24 +19,6 @@
         if (typeof console !== undefined) {
             console.log(message);
         }
-    }
-
-    function _setWins() {
-        var i = 0,
-            p1Wins = 0,
-            p2Wins = 0;
-            
-        for (; i <= _gameIndex; i++) {
-            if (_games[i].winner === 1) {
-                p1Wins++;
-            }
-            else if (_games[i].winner === 2) {
-                p2Wins++;
-            }
-        }
-        
-        document.querySelector('[data-hook~="win-count-player-1"]').innerHTML = p1Wins;
-        document.querySelector('[data-hook~="win-count-player-2"]').innerHTML = p2Wins;
     }
 
     function _issueMove(gameState) {
@@ -54,6 +36,9 @@
 
         if (move != null && move.x != null && move.y != null) {
             board.querySelector('[data-hook="x_' + move.x + '_y_' + move.y + '"]').classList.add(move.isHit ? "tag-danger" : "tag-info");
+
+            board.querySelector('[data-hook="x_' + move.x + '_y_' + move.y + '"]').innerHTML = move.isHit ?
+                '<img src="imgs/hit.png" />' : '<img src="imgs/water.png" />'; 
         }
 
         setTimeout(function () {
@@ -76,19 +61,11 @@
 
         if (gameState.player1_moveCount >= p1total && gameState.player2_moveCount >= p2total) {
             if (gameState.winner === 1) {
-                document.querySelector('[data-hook~="win-count-player-1"]').classList.add('btn-success');
-                document.querySelector('[data-hook~="win-count-player-2"]').classList.remove('btn-success');
+                document.querySelector('[data-hook~="win-player-1"]').innerHTML = 'Winner';
             }
             else if (gameState.winner === 2) {
-                document.querySelector('[data-hook~="win-count-player-1"]').classList.remove('btn-success');
-                document.querySelector('[data-hook~="win-count-player-2"]').classList.add('btn-success');
+                document.querySelector('[data-hook~="win-player-2"]').innerHTML = 'Winner';
             }
-            else {
-                document.querySelector('[data-hook~="win-count-player-1"]').classList.remove('btn-success');
-                document.querySelector('[data-hook~="win-count-player-1"]').classList.remove('btn-success');
-            }
-
-            _setWins();
             return;
         }
 
@@ -169,8 +146,8 @@
         document.querySelector('[data-hook~="results-view-visual"]').classList.add('hide');
         document.querySelector('[data-hook~="results-view-stats"]').classList.add('hide');
 
-        document.querySelector('[data-hook~="win-count-player-1"]').innerHTML = 0;
-        document.querySelector('[data-hook~="win-count-player-2"]').innerHTML = 0;
+        document.querySelector('[data-hook~="win-player-1"]').innerHTML = '';
+        document.querySelector('[data-hook~="win-player-2"]').innerHTML = '';
 
         document.querySelector('[data-hook~="win-percentage-player-1"]').innerHTML = '0.00%';
         document.querySelector('[data-hook~="win-percentage-player-2"]').innerHTML = '0.00%';
@@ -228,6 +205,12 @@
         });
     }
 
+    function _loadTemplates() {
+        _coordinateTemplate = _.template(
+            document.querySelector('[data-hook~="template-coordinate"]').innerHTML
+        );
+    }
+
     function _cleanBoards() {
         var boards = document.querySelectorAll('[data-hook~="board"]'),
             row,
@@ -265,6 +248,8 @@
 
     function onLoad() {
         _loadBots();
+
+        _loadTemplates();
 
         _cleanBoards();
 

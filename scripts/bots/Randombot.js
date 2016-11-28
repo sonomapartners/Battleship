@@ -1,4 +1,4 @@
-(function (global) {
+(function (exports) {
     'use strict';
 
     // ships = [2, 3, 3, 4, 5]
@@ -42,8 +42,12 @@
             xBoardLength = 10;
             yBoardLength = 10;
 
-            if (placeVertical) yBoardLength -= (currentShip - 1);
-            else xBoardLength -= (currentShip - 1);
+            if (placeVertical) {
+                yBoardLength -= (currentShip - 1);
+            }
+            else {
+                xBoardLength -= (currentShip - 1);
+            }
 
             // try placing the ship 10 times before giving up
             for (i = 0; i < 10; i++) {
@@ -59,19 +63,32 @@
 
                 for (j = 0; j < currentShip; j++) {
                     if (placeVertical) {
-                        if (board[x][y + j] === 1) valid = false;
-                    } else {
-                        if (board[x + j][y] === 1) valid = false;
+                        if (board[x][y + j] === 1) {
+                            valid = false;
+                        }
+                    }
+                    else {
+                        if (board[x + j][y] === 1) {
+                            valid = false;
+                        }
                     }
                 }
 
                 if (valid) {
-                    if (placeVertical) end = { x: x, y: y + j - 1 };
-                    else end = { x: x + j - 1, y: y };
+                    if (placeVertical) {
+                        end = { x: x, y: y + j - 1 };
+                    }
+                    else {
+                        end = { x: x + j - 1, y: y };
+                    }
 
                     for (j = 0; j < currentShip; j++) {
-                        if (placeVertical) board[x][y + j] = 1;
-                        else board[x + j][y] = 1;
+                        if (placeVertical) { 
+                            board[x][y + j] = 1;
+                        }
+                        else {
+                            board[x + j][y] = 1;
+                        }
                     }
 
                     placements.push({
@@ -112,10 +129,10 @@
         return move;
     }
 
-    global.Bots = global.Bots || {};
-    global.Bots.Randombot = function Randombot() {
+    exports.Bots = exports.Bots || {};
+    exports.Bots.Randombot = function Randombot() {
         this.setupBoard = setupBoard;
         this.fire = fire;
-    }
+    };
 
-}(this));
+}(typeof exports !== 'undefined' && exports !== null ? exports : this));

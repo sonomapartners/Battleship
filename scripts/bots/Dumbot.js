@@ -1,4 +1,4 @@
-(function (global) {
+(function (exports) {
     'use strict';
 
     // ships = [2, 3, 3, 4, 5]
@@ -42,7 +42,9 @@
                 for (j = 0; j < ships[i]; j++) {
                     valid = !board[y][x + j];
 
-                    if (!valid) break;
+                    if (!valid) {
+                        break;
+                    }
                 }
 
                 if (valid) {
@@ -96,10 +98,10 @@
         return myNewMove;
     }
 
-    global.Bots = global.Bots || {};
-    global.Bots.Dumbot = function Dumbot() {
+    exports.Bots = exports.Bots || {};
+    exports.Bots.Dumbot = function Dumbot() {
         this.setupBoard = setupBoard;
         this.fire = fire;
     };
 
-}(this));
+}(typeof exports !== 'undefined' && exports !== null ? exports : this));

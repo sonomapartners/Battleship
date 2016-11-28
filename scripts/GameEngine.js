@@ -1,4 +1,6 @@
-(function (global) {
+/*globals Logger*/
+
+(function (exports) {
     'use strict';
 
     var ResultType = {
@@ -7,15 +9,26 @@
         Player2: 2
     };
 
-    global.GameEngine = global.GameEngine || (function () {
+    exports.GameEngine = exports.GameEngine || (function () {
 
         var _player1state,
             _player2state;
 
-        function _log(message) {
-            if (typeof console !== undefined) {
-                console.log(message);
+        function _getPlayerName(player) {
+            var name;
+
+            if (typeof player !== undefined && player !== null && player.name != null) {
+                name = player.name;
             }
+            else if (typeof player !== undefined && player !== null && player.constructor != null && player.constructor.name != null) {
+                name = player.constructor.name;
+            }
+
+            if (name == null || name === '' || /^\s+$/.test(name)) {
+                return '[PLAYER FUNCTION NAME NOT SUPPLIED, PLEASE CHECK SAMPLE BOT FOR CORRECT IMPLEMENTATION PATTERN]';
+            }
+
+            return name;
         }
 
         function _validatePlacements(player, playerState) {
@@ -27,6 +40,7 @@
                 yChange = 0,
                 placeCounter = 0,
                 j = 0,
+                playerName,
                 x, y,
                 board = [
                     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -42,10 +56,10 @@
                 ];
                 
             if (!places || !places.length) {
-                throw new Error('Placements are undefined or empty.');
+                throw new Error('Placements are undefined or empty for ' + _getPlayerName(player));
             }
             else if (places.length !== 5) {
-                throw new Error('Incorrect number of placements encountered. Should\'ve seen 5, instead saw: ' + places.length);
+                throw new Error('Incorrect number of placements encountered. Should\'ve seen 5, instead saw: ' + places.length + ' for ' + _getPlayerName(player));
             }
             
             placeCounter = places.length;
@@ -53,14 +67,14 @@
                 place = places[placeCounter];
                 
                 if (!place || !place.begin || !place.end) {
-                    throw new Error('Placement #' + placeCounter + ' is undefined or one of it\'s points are.');
+                    throw new Error('Placement #' + placeCounter + ' is undefined or one of it\'s points are for ' + _getPlayerName(player));
                 }
                 
                 if (place.begin.x < 0 || place.begin.x > 9 ||
                     place.begin.y < 0 || place.begin.y > 9 ||
                     place.end.x < 0 || place.end.x > 9 ||
                     place.end.y < 0 || place.end.y > 9) {
-                    throw new Error('Placement #' + placeCounter + ' is off the grid. P: ' + place.toString());
+                    throw new Error('Placement #' + placeCounter + ' is off the grid. P: ' + JSON.stringify(place) + ' for ' + _getPlayerName(player));
                 }
                 
                 if (place.begin.x !== place.end.x &&
@@ -74,11 +88,11 @@
                     size = Math.abs(place.end.y - place.begin.y) + 1;
                 }
                 else {
-                    throw new Error('Placement #' + placeCounter + ' appears diagonal. P: ' + place.toString());
+                    throw new Error('Placement #' + placeCounter + ' appears diagonal. P: ' + JSON.stringify(place) + ' for ' + _getPlayerName(player));
                 }
                 
                 if (size < 0 || size > 5) {
-                    throw new Error('Placement #' + placeCounter + ' is outside the valid ship length. Size: ' + size);
+                    throw new Error('Placement #' + placeCounter + ' is outside the valid ship length. Size: ' + size + ' for ' + _getPlayerName(player));
                 }
                 
                 xChange = dir === 'x' ? 1 : 0;
@@ -90,7 +104,7 @@
                         board[y][x] = 1;
                     }
                     else {
-                        throw new Error('Placement #' + placeCounter + ' appears to overlap another placement. P: ' + place.toString() + ' ' + JSON.stringify(places));
+                        throw new Error('Placement #' + placeCounter + ' appears to overlap another placement. P: ' + JSON.stringify(place) + ' ' + JSON.stringify(places) + ' for ' + _getPlayerName(player));
                     }
                 }
             }
@@ -116,8 +130,11 @@
 
             move = player.fire(playerState.moves, opponentState.moves);
 
-            if (move == null || move.x == null || move.y == null) {
-                throw new Error('Received null/undefined location upon which to fire.')
+            if (move == null || move.x == null || move.y == null || isNaN(move.x) || isNaN(move.y)) {
+                throw new Error('Received null/undefined location upon which to fire for ' + _getPlayerName(player));
+            }
+            else if (move.x > 9 || move.x < 0 || move.y > 9 || move.y < 0) {
+                throw new Error('Player breached bounds of game with move. Shot generated: ' + JSON.stringify(move) + ' by ' + _getPlayerName(player));
             }
 
             playerState.moves.push(move);
@@ -179,7 +196,7 @@
                 _validatePlacements(player1, _player1state);
             }
             catch (er) {
-                _log(er.message);
+                Logger.warn(er.message);
                 p1Error = er.message + ' ' + er.stack;
             }
             try {
@@ -187,7 +204,7 @@
                 _validatePlacements(player2, _player2state);
             }
             catch (er) {
-                _log(er.message);
+                Logger.warn(er.message);
                 p2Error = er.message + ' ' + er.stack;
             }
 
@@ -203,7 +220,7 @@
                     result = _fire(player1, _player1state, _player2state);
                 }
                 catch (er) {
-                    _log(er.message);
+                    Logger.warn(er.message);
                     p1Error = er.message + ' ' + er.stack;
                     return ResultType.Player2;
                 }
@@ -222,7 +239,7 @@
                     }
                 }
                 catch (er) {
-                    _log(er.message);
+                    Logger.warn(er.message);
                     p2Error = er.message + ' ' + er.stack;
                     return ResultType.Player1;
                 }
@@ -246,7 +263,7 @@
             }
         }
 
-        function run(player1, player2, numberOfGames) {
+        function run(Player1, Player2, numberOfGames) {
             var results = [],
                 result;
 
@@ -262,7 +279,7 @@
                 };
 
                 result = {
-                    winner: _runGame(new player1(), new player2()),
+                    winner: _runGame(new Player1(), new Player2()),
                     player1_moves: _player1state.moves,
                     player2_moves: _player2state.moves
                 };
@@ -279,4 +296,4 @@
 
     }());
 
-}(this));
+}(typeof exports !== 'undefined' && exports !== null ? exports : this));

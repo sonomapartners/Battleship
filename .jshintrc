@@ -1,0 +1,32 @@
+{
+    // See http://jshint.com/docs/ for more details
+
+    "bitwise": true,
+    "curly": true,
+    "devel": true,
+    "eqeqeq": true,
+    "forin": false,
+    "jquery": false,
+    "latedef": true,
+    "newcap": true,
+    "noarg": true,
+    "noempty": true,
+    "nonew": true,
+    "onevar": true,
+    "regexp": true,
+    "quotmark": false,
+    "undef": true,
+    "eqnull": true,
+    "validthis": true,
+    "globals": {
+        "XMLHttpRequest": true,
+        "XPathResult": true,
+        "XMLDocument": true,
+        "Element": true,
+        "window": true,
+        "setTimeout": true,
+        "document": true,
+        "requestAnimationFrame": true,
+        "exports": true
+    }
+}

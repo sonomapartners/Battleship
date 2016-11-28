@@ -1,4 +1,4 @@
-(function (global) {
+(function (exports) {
     'use strict';
 
     // ships = [2, 3, 3, 4, 5]
@@ -15,10 +15,10 @@
         but leave the rest of this code as is so the framework can 
         find your bot and run it :)
     */
-    global.Bots = global.Bots || {};
-    global.Bots.MyBot = function MyBot() {
+    exports.Bots = exports.Bots || {};
+    exports.Bots.MyBot = function MyBot() {
         this.setupBoard = setupBoard;
         this.fire = fire;
     };
 
-}(this));
+}(typeof exports !== 'undefined' && exports !== null ? exports : this));

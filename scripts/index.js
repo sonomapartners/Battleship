@@ -1,4 +1,6 @@
-(function(global) {
+/*globals _, Bots, CONFIG, GameEngine, Logger*/
+
+(function (exports) {
     'use strict';
 
     function GameState(player1_moves, player2_moves, winner, delay) {
@@ -15,15 +17,31 @@
         _games,
         _gameIndex;
 
-    function _log(message) {
-        if (typeof console !== undefined) {
-            console.log(message);
-        }
+    function _cleanBoards() {
+        var boards = document.querySelectorAll('[data-hook~="board"]'),
+            row, rowHtml,
+            x, y;
+
+        _.each(boards, function (board) {
+            board.innerHTML = '';
+
+            for (x = 0; x < 10; x++) {
+                row = document.createElement('div');
+                rowHtml = '';
+
+                for (y = 0; y < 10; y++) {
+                    rowHtml += _coordinateTemplate({ x: x, y: y});
+                }
+
+                row.innerHTML = rowHtml;
+                board.appendChild(row);
+            }
+        });
     }
 
     function _issueMove(gameState) {
         var board,
-            move = gameState.currentPlayer == 1 ? 
+            move = gameState.currentPlayer === 1 ? 
                 gameState.player1_moves[gameState.player1_moveCount] : 
                 gameState.player2_moves[gameState.player2_moveCount];
 
@@ -50,8 +68,10 @@
                 gameState.currentPlayer = 1;
                 gameState.player2_moveCount++;
             }
-            
+
+            /* jshint ignore: start */
             _replayGame(gameState);
+            /* jshint ignore: end */
         }, gameState.delay);
     }
 
@@ -76,15 +96,15 @@
         var winner = game.winner,
             p1moves = game.player1_moves,
             p2moves = game.player2_moves,
-            delay = 20; // Delay in ms
+            delay = CONFIG.RENDER_DELAY; // Delay in ms
 
         document.querySelector('[data-hook~="results-view-visual"]').classList.remove('hide');
 
         if (game.player1LastError) {
-            _log('Player 1: ' + game.player1LastError);
+            Logger.warn('Player 1: ' + game.player1LastError);
         }
         if (game.player2LastError) {
-            _log('Player 2: ' + game.player1LastError);
+            Logger.warn('Player 2: ' + game.player1LastError);
         }
 
         _replayGame(new GameState(p1moves, p2moves, winner, delay));
@@ -115,10 +135,10 @@
             totalCount++;
 
             if (game.player1LastError) {
-                _log('Player 1: ' + game.player1LastError);
+                Logger.warn('Player 1: ' + game.player1LastError);
             }
             if (game.player2LastError) {
-                _log('Player 2: ' + game.player1LastError);
+                Logger.warn('Player 2: ' + game.player1LastError);
             }
         });
 
@@ -163,7 +183,7 @@
 
         _reset();
 
-        _games = GameEngine.run(global.Bots[player1Name], global.Bots[player2Name], 1);
+        _games = GameEngine.run(Bots[player1Name], Bots[player2Name], 1);
 
         _displayResults(_games[_gameIndex]);
     }
@@ -176,7 +196,7 @@
         _reset();
 
         start = Date.now();
-        _games = GameEngine.run(global.Bots[player1Name], global.Bots[player2Name], 1000);
+        _games = GameEngine.run(Bots[player1Name], Bots[player2Name], 1000);
         end = Date.now();
 
         _displayBulkResults(_games, (end - start));
@@ -186,7 +206,7 @@
         var playerLists = document.querySelectorAll('[data-hook~="player-list"]'),
             bots = [];
 
-        for (var botName in global.Bots) {
+        for (var botName in Bots) {
             bots.push(botName);
         }
 
@@ -194,7 +214,7 @@
 
         _.each(playerLists, function (select) {
             _.each(bots, function (botName) {
-                var bot = global.Bots[botName],
+                var bot = Bots[botName],
                     option = document.createElement('option');
 
                 option.value = botName;
@@ -209,26 +229,6 @@
         _coordinateTemplate = _.template(
             document.querySelector('[data-hook~="template-coordinate"]').innerHTML
         );
-    }
-
-    function _cleanBoards() {
-        var boards = document.querySelectorAll('[data-hook~="board"]'),
-            row,
-            x, y;
-
-        _.each(boards, function (board) {
-            board.innerHTML = '';
-
-            for (x = 0; x < 10; x++) {
-                row = document.createElement('div');
-
-                for (y = 0; y < 10; y++) {
-                    row.innerHTML += _coordinateTemplate({ x: x, y: y});
-                }
-
-                board.appendChild(row);
-            }
-        });
     }
 
     function _attachEvents() {
@@ -256,6 +256,8 @@
         _attachEvents();
     }
 
-    global.addEventListener('DOMContentLoaded', onLoad);
+    if (typeof window !== 'undefined' && window !== null) {
+        window.addEventListener('DOMContentLoaded', onLoad);
+    }
 
-})(window);
+}(typeof exports !== 'undefined' && exports !== null ? exports : this));

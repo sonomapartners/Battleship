@@ -13,7 +13,7 @@ Welcome to the battle!
 
 1. A stub file `MyBot.js` is setup for you in the root directory. You may change the name of the bot, but please ensure to change the name everywhere (the filename, function name, etc).
 2. Modify the stub file to implement the two functions requested, `setupBoard` and `fire`. Feel free to use the sample bots in the `/scripts/bots/` directory as examples or starting points as well.
-    - `setupBoard` should take in an array of ship sizes (array of integers). By default the ship sizes are [2, 3, 3, 4, 5], but it may change! `setupBoard` should return an array of placement objects, which are simply defined as a starting X and Y coordinate, and an ending X and Y coordinate. The object should be of the form `{ start: { x: [0-9], y: [0-9] }, end: { x: [0-9], y: [0-9] } }`.
+    - `setupBoard` should take in an array of ship sizes (array of integers). By default the ship sizes are [2, 3, 3, 4, 5], but it may change! `setupBoard` should return an array of placement objects, which are simply defined as a starting X and Y coordinate, and an ending X and Y coordinate. The object should be of the form `{ begin: { x: [0-9], y: [0-9] }, end: { x: [0-9], y: [0-9] } }`.
     - `fire` will be passed an array of your previous shots (target coordinates) as well as your opponents shots. Do what you want to with those values, and then return a coordinate of the form `{ x: [0-9], y: [0-9] }` which will be your selected target for the round.
 
 **Notes:**
